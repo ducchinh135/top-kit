@@ -13,7 +13,7 @@ import { join } from 'path';
  */
 export const TopKitPlugin = async ({ project, client, $, directory, worktree }) => {
   const skillsDir = join(directory, 'skills');
-  const bootstrapFile = join(skillsDir, 'using-topkit', 'SKILL.md');
+  const bootstrapFile = join(skillsDir, 'top-using-topkit', 'SKILL.md');
 
   let bootstrapContent = null;
 

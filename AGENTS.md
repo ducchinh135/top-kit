@@ -26,11 +26,11 @@ User Request
 
 | Skill | Purpose | When to Trigger |
 |-------|---------|-----------------|
-| `using-topkit` | Bootstrap — introduces skill system | Session start (auto-loaded) |
-| `brainstorming` | Design before code | ALWAYS before implementation |
-| `writing-plans` | Break work into 2-5 min tasks | After design approved |
-| `test-driven-development` | RED-GREEN-REFACTOR cycle | During all implementation |
-| `executing-plans` | Subagent dispatch with review | When executing a plan |
+| `top-using-topkit` | Bootstrap — introduces skill system | Session start (auto-loaded) |
+| `top-brainstorming` | Design before code | ALWAYS before implementation |
+| `top-writing-plans` | Break work into 2-5 min tasks | After design approved |
+| `top-test-driven-development` | RED-GREEN-REFACTOR cycle | During all implementation |
+| `top-executing-plans` | Subagent dispatch with review | When executing a plan |
 
 ### Mandatory Rules
 

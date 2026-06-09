@@ -1,5 +1,5 @@
 ---
-name: using-topkit
+name: top-using-topkit
 description: "Bootstrap skill — introduces the Top-Kit skills system. MUST be loaded at session start."
 ---
 
@@ -15,10 +15,10 @@ Top-Kit is a disciplined software development methodology. You have access to a 
 
 | Skill | Purpose | When to Trigger |
 |-------|---------|-----------------|
-| `brainstorming` | Design before code | ALWAYS before implementation |
-| `writing-plans` | Break work into 2-5 min tasks | After design approved |
-| `test-driven-development` | RED-GREEN-REFACTOR cycle | During all implementation |
-| `executing-plans` | Subagent dispatch with review | When executing a plan |
+| `top-brainstorming` | Design before code | ALWAYS before implementation |
+| `top-writing-plans` | Break work into 2-5 min tasks | After design approved |
+| `top-test-driven-development` | RED-GREEN-REFACTOR cycle | During all implementation |
+| `top-executing-plans` | Subagent dispatch with review | When executing a plan |
 
 ### Skill Priority
 
@@ -34,11 +34,11 @@ User instructions > Top-Kit skills > Default behavior
 
 **If there is even a 1% chance a skill applies, you MUST invoke it.**
 
-- User asks to build something? → Invoke `brainstorming`
-- User asks to fix a bug? → Invoke `brainstorming` (understand the problem first)
-- Design is approved? → Invoke `writing-plans`
-- Writing code? → Invoke `test-driven-development`
-- Executing a plan? → Invoke `executing-plans`
+- User asks to build something? → Invoke `top-brainstorming`
+- User asks to fix a bug? → Invoke `top-brainstorming` (understand the problem first)
+- Design is approved? → Invoke `top-writing-plans`
+- Writing code? → Invoke `top-test-driven-development`
+- Executing a plan? → Invoke `top-executing-plans`
 
 **Do NOT wait for the user to ask you to use a skill. Invoke proactively.**
 
@@ -46,8 +46,8 @@ User instructions > Top-Kit skills > Default behavior
 
 | Type | Behavior | Examples |
 |------|----------|----------|
-| **Rigid** | Follow EXACTLY as written. No deviations. | `test-driven-development`, `brainstorming` |
-| **Flexible** | Adapt to context, but follow the spirit | `writing-plans` (adjust granularity) |
+| **Rigid** | Follow EXACTLY as written. No deviations. | `top-test-driven-development`, `top-brainstorming` |
+| **Flexible** | Adapt to context, but follow the spirit | `top-writing-plans` (adjust granularity) |
 
 **When in doubt: treat it as rigid.**
 

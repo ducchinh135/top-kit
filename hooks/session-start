@@ -9,7 +9,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # Read the bootstrap skill
-BOOTSTRAP_FILE="$REPO_ROOT/skills/using-topkit/SKILL.md"
+BOOTSTRAP_FILE="$REPO_ROOT/skills/top-using-topkit/SKILL.md"
 
 if [ ! -f "$BOOTSTRAP_FILE" ]; then
   echo '{"error": "Bootstrap file not found"}' >&2
