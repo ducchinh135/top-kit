@@ -4,36 +4,62 @@ A disciplined software development methodology for AI coding agents. Enforces de
 
 ## Quick Start
 
-### Install as npm dependency (Recommended)
+### Option 1: npx skills add (Recommended for skills-only)
+
+```bash
+npx skills add ducchinh135/top-kit --all -g
+```
+
+This installs skills globally for all supported platforms:
+- Claude Code
+- OpenCode
+- Cursor
+- Codex CLI
+
+### Option 2: npm dependency (Recommended for full setup)
 
 ```bash
 npm install topkit --save-dev
 ```
 
 This automatically:
-- Detects your AI tools (Claude Code, OpenCode, Cursor, Codex CLI)
+- Detects your AI tools
 - Creates symlinks for skills and plugins
 - Sets up session bootstrap hooks
 - Updates automatically with `npm update`
 
-### Manual Install
+### Option 3: Manual Install
 
 ```bash
 npx topkit install
 ```
 
+## Installation Methods Comparison
+
+| Method | Skills | Plugins | Hooks | Best For |
+|--------|--------|---------|-------|----------|
+| `npx skills add` | ✅ | ❌ | ❌ | Skills only, global install |
+| `npm install topkit --save-dev` | ✅ | ✅ | ✅ | Full setup, project-based |
+| `npx topkit install` | ✅ | ✅ | ✅ | Manual control |
+
 ## Supported Platforms
 
-| Platform | Install Method | Hooks |
-|----------|----------------|-------|
-| Claude Code | `npm install topkit --save-dev` | ✅ SessionStart hook |
-| OpenCode | `npm install topkit --save-dev` | ✅ Message transform hook |
-| Cursor | `npm install topkit --save-dev` | ✅ sessionStart hook |
-| Codex CLI | `npm install topkit --save-dev` | ❌ Skills load natively |
+| Platform | npx skills add | npm install | Hooks |
+|----------|----------------|-------------|-------|
+| Claude Code | ✅ | ✅ | ✅ SessionStart hook |
+| OpenCode | ✅ | ✅ | ✅ Message transform hook |
+| Cursor | ✅ | ✅ | ✅ sessionStart hook |
+| Codex CLI | ✅ | ✅ | ❌ Skills load natively |
 
 ## How It Works
 
-When you run `npm install topkit --save-dev`:
+### With npx skills add
+
+1. **Skills installed** — Copies SKILL.md files to `~/.agents/skills/`
+2. **Platform discovery** — Each platform finds skills in its skill path
+3. **Manual setup** — You may need to configure hooks separately
+
+### With npm install
 
 1. **Postinstall runs** — Detects AI tools
 2. **Symlinks created** — Skills and plugins linked (not copied)
