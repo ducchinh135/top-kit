@@ -1,0 +1,19 @@
+{
+  "name": "topkit",
+  "description": "Top-Kit: Disciplined software development methodology with TDD, design-first, and systematic workflows",
+  "version": "1.0.0",
+  "author": {
+    "name": "Top-Kit Team"
+  },
+  "license": "MIT",
+  "keywords": [
+    "tdd",
+    "brainstorming",
+    "planning",
+    "debugging",
+    "code-review",
+    "workflow",
+    "best-practices"
+  ],
+  "hooks": "./hooks/hooks.json"
+}

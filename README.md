@@ -4,100 +4,44 @@ A disciplined software development methodology for AI coding agents. Enforces de
 
 ## Quick Start
 
-Clone or copy this repository into your project:
+### Install as npm dependency (Recommended)
 
 ```bash
-git clone https://github.com/your-org/top-kit.git
+npm install topkit --save-dev
 ```
 
-Or copy the relevant files into your existing project.
+This automatically:
+- Detects your AI tools (Claude Code, OpenCode, Cursor, Codex CLI)
+- Creates symlinks for skills and plugins
+- Sets up session bootstrap hooks
+- Updates automatically with `npm update`
 
-## Installation by Platform
-
-### Claude Code
-
-**Option 1: Manual (Recommended)**
-
-Copy these files to your project root:
-- `AGENTS.md`
-- `core-instructions.md`
-- `.claude-plugin/plugin.json`
-- `hooks/` directory (all files)
-- `skills/` directory (all files)
-
-**Option 2: Plugin Marketplace**
+### Manual Install
 
 ```bash
-/plugin install topkit@your-marketplace
+npx topkit install
 ```
 
-### OpenCode
+## Supported Platforms
 
-**Step 1:** Copy these to your project:
-- `AGENTS.md`
-- `core-instructions.md`
-- `.opencode/plugins/topkit.js`
-- `skills/` directory
-
-**Step 2:** Add to `opencode.json` (if not auto-detected):
-
-```json
-{
-  "plugin": ["./.opencode/plugins/topkit.js"]
-}
-```
-
-### Codex CLI
-
-Copy these files to your project root:
-- `AGENTS.md`
-- `core-instructions.md`
-- `.codex-plugin/plugin.json`
-- `skills/` directory
-
-The plugin is auto-discovered from `.codex-plugin/plugin.json`.
-
-### Cursor
-
-Copy these files to your project root:
-- `AGENTS.md`
-- `core-instructions.md`
-- `.cursor-plugin/plugin.json`
-- `hooks/hooks-cursor.json`
-- `hooks/session-start`
-- `hooks/run-hook.cmd`
-- `skills/` directory
-
-### Gemini CLI
-
-Copy these files to your project root:
-- `AGENTS.md`
-- `core-instructions.md`
-- `gemini-extension.json`
-- `GEMINI.md`
-- `skills/` directory
-
-Register the extension:
-
-```bash
-gemini extensions install .
-```
-
-### Copilot CLI
-
-Copy these files to your project root:
-- `AGENTS.md`
-- `core-instructions.md`
-- `.claude-plugin/plugin.json` (Copilot uses same format)
-- `hooks/` directory
-- `skills/` directory
+| Platform | Install Method | Hooks |
+|----------|----------------|-------|
+| Claude Code | `npm install topkit --save-dev` | ✅ SessionStart hook |
+| OpenCode | `npm install topkit --save-dev` | ✅ Message transform hook |
+| Cursor | `npm install topkit --save-dev` | ✅ sessionStart hook |
+| Codex CLI | `npm install topkit --save-dev` | ❌ Skills load natively |
 
 ## How It Works
 
-When an AI agent starts a session in your project:
+When you run `npm install topkit --save-dev`:
 
-1. **Bootstrap loads** — The agent reads `AGENTS.md` and `core-instructions.md`
-2. **Skills activate** — The agent follows the workflow chain
+1. **Postinstall runs** — Detects AI tools
+2. **Symlinks created** — Skills and plugins linked (not copied)
+3. **Hooks setup** — Session bootstrap activated
+
+When AI agent starts a session:
+1. **Bootstrap loads** — Agent reads `AGENTS.md` and `core-instructions.md`
+2. **Skills activate** — Agent follows the workflow chain
 3. **Enforcement** — Skills are mandatory, not suggestions
 
 ### The Workflow Chain
@@ -111,15 +55,31 @@ User Request
   → Verification (evidence over claims)
 ```
 
+## CLI Commands
+
+```bash
+# Install (manual)
+npx topkit install
+
+# Remove Top-Kit
+npx topkit uninstall
+
+# Show detected platforms
+npx topkit list
+
+# Show help
+npx topkit help
+```
+
 ## Skills
 
 | Skill | Purpose |
 |-------|---------|
-| `using-topkit` | Bootstrap — introduces the skill system |
-| `brainstorming` | Design before code — Socratic questioning, 2-3 approaches, design doc |
-| `writing-plans` | Break work into 2-5 min tasks with exact file paths and code |
-| `test-driven-development` | RED-GREEN-REFACTOR — no code without failing test first |
-| `executing-plans` | Subagent dispatch with two-stage review |
+| `top-using-topkit` | Bootstrap — introduces the skill system |
+| `top-brainstorming` | Design before code — Socratic questioning, 2-3 approaches, design doc |
+| `top-writing-plans` | Break work into 2-5 min tasks with exact file paths and code |
+| `top-test-driven-development` | RED-GREEN-REFACTOR — no code without failing test first |
+| `top-executing-plans` | Subagent dispatch with two-stage review |
 
 ## Philosophy
 
@@ -132,27 +92,26 @@ User Request
 
 ```
 top-kit/
-├── AGENTS.md                    # Bootstrap entry point
-├── CLAUDE.md                    # Claude Code context
-├── GEMINI.md                    # Gemini context references
-├── README.md                    # This file
-├── core-instructions.md         # 7 Supreme Laws
-├── gemini-extension.json        # Gemini extension manifest
-├── .claude-plugin/plugin.json   # Claude Code plugin
-├── .codex-plugin/plugin.json    # Codex plugin
-├── .cursor-plugin/plugin.json   # Cursor plugin
-├── .opencode/plugins/topkit.js  # OpenCode plugin
-├── hooks/
-│   ├── run-hook.cmd             # Windows polyglot wrapper
-│   ├── hooks.json               # Claude Code hooks
-│   ├── hooks-cursor.json        # Cursor hooks
-│   └── session-start            # Bootstrap injection script
-└── skills/
-    ├── using-topkit/SKILL.md    # Bootstrap skill
-    ├── brainstorming/SKILL.md   # Design before code
-    ├── writing-plans/SKILL.md   # Task breakdown
-    ├── test-driven-development/SKILL.md  # TDD
-    └── executing-plans/SKILL.md # Subagent dispatch
+├── package.json              # npm package config
+├── bin/
+│   └── topkit.js             # CLI entry point
+├── lib/
+│   ├── index.js              # Package exports
+│   ├── installer.js          # Main orchestrator (symlinks)
+│   ├── detector.js           # Platform detection
+│   ├── postinstall.js        # Auto-setup on npm install
+│   ├── preuninstall.js       # Cleanup on npm uninstall
+│   └── utils.js              # Helper functions
+├── plugins/                  # Plugin source files
+│   ├── claude-code/
+│   ├── opencode/
+│   ├── cursor/
+│   └── codex/
+├── skills/                   # Skill files
+├── AGENTS.md                 # Bootstrap entry point
+├── CLAUDE.md                 # Claude Code context
+├── core-instructions.md      # 7 Supreme Laws
+└── README.md
 ```
 
 ## License

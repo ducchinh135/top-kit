@@ -1,0 +1,35 @@
+{
+  "name": "topkit",
+  "version": "1.0.0",
+  "description": "Top-Kit: Disciplined software development methodology with TDD, design-first, and systematic workflows",
+  "author": {
+    "name": "Top-Kit Team"
+  },
+  "homepage": "https://github.com/ducchinh135/top-kit",
+  "repository": "https://github.com/ducchinh135/top-kit",
+  "license": "MIT",
+  "keywords": [
+    "brainstorming",
+    "tdd",
+    "planning",
+    "debugging",
+    "code-review",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Top-Kit",
+    "shortDescription": "Design-first, TDD-enforced development methodology for coding agents",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "I have an idea for something I'd like to build.",
+      "Let's add a feature to this project."
+    ],
+    "brandColor": "#3B82F6"
+  }
+}

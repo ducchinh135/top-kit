@@ -1,0 +1,22 @@
+{
+  "name": "topkit",
+  "displayName": "Top-Kit",
+  "description": "Disciplined software development methodology: TDD, design-first, systematic workflows",
+  "version": "1.0.0",
+  "author": {
+    "name": "Top-Kit Team"
+  },
+  "homepage": "https://github.com/ducchinh135/top-kit",
+  "repository": "https://github.com/ducchinh135/top-kit",
+  "license": "MIT",
+  "keywords": [
+    "tdd",
+    "brainstorming",
+    "planning",
+    "debugging",
+    "workflow",
+    "best-practices"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks-cursor.json"
+}

@@ -75,21 +75,41 @@ Test-FileExists -Path "GEMINI.md" -Name "GEMINI.md exists"
 Test-FileExists -Path "gemini-extension.json" -Name "gemini-extension.json exists"
 Test-FileExists -Path "README.md" -Name "README.md exists"
 
-# Test 2: Plugin Manifests
-Write-Host "`n--- Plugin Manifests ---" -ForegroundColor Yellow
-Test-FileExists -Path ".claude-plugin/plugin.json" -Name "Claude Code plugin manifest"
-Test-FileExists -Path ".codex-plugin/plugin.json" -Name "Codex plugin manifest"
-Test-FileExists -Path ".cursor-plugin/plugin.json" -Name "Cursor plugin manifest"
-Test-FileExists -Path ".opencode/plugins/topkit.js" -Name "OpenCode plugin"
+# Test 2: Package Config
+Write-Host "`n--- Package Config ---" -ForegroundColor Yellow
+Test-FileExists -Path "package.json" -Name "package.json exists"
 
-# Test 3: Hook Files
-Write-Host "`n--- Hook Files ---" -ForegroundColor Yellow
-Test-FileExists -Path "hooks/session-start" -Name "Session start script (bash)"
-Test-FileExists -Path "hooks/run-hook.cmd" -Name "Session start script (Windows)"
-Test-FileExists -Path "hooks/hooks.json" -Name "Claude Code hooks config"
-Test-FileExists -Path "hooks/hooks-cursor.json" -Name "Cursor hooks config"
+# Test 3: CLI Entry Point
+Write-Host "`n--- CLI Entry Point ---" -ForegroundColor Yellow
+Test-FileExists -Path "bin/topkit.js" -Name "bin/topkit.js exists"
 
-# Test 4: Skills
+# Test 4: Library Files
+Write-Host "`n--- Library Files ---" -ForegroundColor Yellow
+Test-FileExists -Path "lib/installer.js" -Name "lib/installer.js exists"
+Test-FileExists -Path "lib/detector.js" -Name "lib/detector.js exists"
+Test-FileExists -Path "lib/skills-installer.js" -Name "lib/skills-installer.js exists"
+Test-FileExists -Path "lib/utils.js" -Name "lib/utils.js exists"
+
+# Test 5: Plugin Installers
+Write-Host "`n--- Plugin Installers ---" -ForegroundColor Yellow
+Test-FileExists -Path "lib/plugins/claude-code.js" -Name "lib/plugins/claude-code.js exists"
+Test-FileExists -Path "lib/plugins/opencode.js" -Name "lib/plugins/opencode.js exists"
+Test-FileExists -Path "lib/plugins/cursor.js" -Name "lib/plugins/cursor.js exists"
+Test-FileExists -Path "lib/plugins/codex.js" -Name "lib/plugins/codex.js exists"
+
+# Test 6: Plugin Source Files
+Write-Host "`n--- Plugin Source Files ---" -ForegroundColor Yellow
+Test-FileExists -Path "plugins/claude-code/plugin.json" -Name "Claude Code plugin manifest"
+Test-FileExists -Path "plugins/claude-code/hooks/hooks.json" -Name "Claude Code hooks config"
+Test-FileExists -Path "plugins/claude-code/hooks/session-start" -Name "Claude Code session-start script"
+Test-FileExists -Path "plugins/claude-code/hooks/run-hook.cmd" -Name "Claude Code run-hook.cmd"
+Test-FileExists -Path "plugins/opencode/topkit.js" -Name "OpenCode plugin"
+Test-FileExists -Path "plugins/cursor/plugin.json" -Name "Cursor plugin manifest"
+Test-FileExists -Path "plugins/cursor/hooks/hooks-cursor.json" -Name "Cursor hooks config"
+Test-FileExists -Path "plugins/cursor/hooks/session-start" -Name "Cursor session-start script"
+Test-FileExists -Path "plugins/codex/plugin.json" -Name "Codex plugin manifest"
+
+# Test 7: Skills
 Write-Host "`n--- Skills ---" -ForegroundColor Yellow
 $skills = @(
     "top-using-topkit",
@@ -105,7 +125,7 @@ foreach ($skill in $skills) {
     Test-SkillFrontmatter -SkillPath $skillPath -SkillName $skill | Out-Null
 }
 
-# Test 5: Hook Script Works
+# Test 8: Hook Script Works
 Write-Host "`n--- Hook Script Test ---" -ForegroundColor Yellow
 
 # Check if bash is available
@@ -119,7 +139,7 @@ Write-Test -Name "Bash available on PATH" -Passed $bashAvailable
 if ($bashAvailable) {
     try {
         $env:CLAUDE_PLUGIN_ROOT = (Get-Location).Path
-        $output = bash "$PSScriptRoot/../hooks/session-start" 2>&1
+        $output = bash "$PSScriptRoot/../plugins/claude-code/hooks/session-start" 2>&1
         $isValidJson = $false
         try {
             $null = $output | ConvertFrom-Json
@@ -133,16 +153,17 @@ if ($bashAvailable) {
     Write-Test -Name "session-start script (skipped - no bash)" -Passed $true
 }
 
-# Test 6: Plugin JSON Validity
+# Test 9: Plugin JSON Validity
 Write-Host "`n--- Plugin JSON Validity ---" -ForegroundColor Yellow
 
 $jsonFiles = @(
-    ".claude-plugin/plugin.json",
-    ".codex-plugin/plugin.json",
-    ".cursor-plugin/plugin.json",
-    "hooks/hooks.json",
-    "hooks/hooks-cursor.json",
-    "gemini-extension.json"
+    "plugins/claude-code/plugin.json",
+    "plugins/codex/plugin.json",
+    "plugins/cursor/plugin.json",
+    "plugins/claude-code/hooks/hooks.json",
+    "plugins/cursor/hooks/hooks-cursor.json",
+    "gemini-extension.json",
+    "package.json"
 )
 
 foreach ($file in $jsonFiles) {
@@ -157,15 +178,24 @@ foreach ($file in $jsonFiles) {
     }
 }
 
-# Test 7: OpenCode Plugin Syntax
+# Test 10: OpenCode Plugin Syntax
 Write-Host "`n--- OpenCode Plugin Syntax ---" -ForegroundColor Yellow
-$pluginContent = Get-Content -Path ".opencode/plugins/topkit.js" -Raw
+$pluginContent = Get-Content -Path "plugins/opencode/topkit.js" -Raw
 $hasExport = $pluginContent -match 'export\s+(const|default)'
 $hasHooks = $pluginContent -match 'experimental\.chat\.messages\.transform'
 $hasConfig = $pluginContent -match 'config:'
 Write-Test -Name "OpenCode plugin has exports" -Passed $hasExport
 Write-Test -Name "OpenCode plugin has message transform hook" -Passed $hasHooks
 Write-Test -Name "OpenCode plugin has config hook" -Passed $hasConfig
+
+# Test 11: Package.json Validity
+Write-Host "`n--- Package.json Validity ---" -ForegroundColor Yellow
+if (Test-Path "package.json") {
+    $pkg = Get-Content -Path "package.json" -Raw | ConvertFrom-Json
+    Write-Test -Name "package.json has name" -Passed ($pkg.name -eq "topkit")
+    Write-Test -Name "package.json has bin" -Passed ($null -ne $pkg.bin)
+    Write-Test -Name "package.json has type module" -Passed ($pkg.type -eq "module")
+}
 
 # Summary
 Write-Host "`n========================================" -ForegroundColor Cyan

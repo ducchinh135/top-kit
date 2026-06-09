@@ -1,0 +1,45 @@
+{
+  "name": "topkit",
+  "version": "1.0.0",
+  "description": "Universal installer for Top-Kit: disciplined software development methodology for AI coding agents",
+  "type": "module",
+  "main": "./lib/index.js",
+  "bin": {
+    "topkit": "./bin/topkit.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "plugins/",
+    "skills/",
+    "templates/",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "core-instructions.md"
+  ],
+  "scripts": {
+    "postinstall": "node ./lib/postinstall.js",
+    "preuninstall": "node ./lib/preuninstall.js"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "tdd",
+    "brainstorming",
+    "planning",
+    "workflow",
+    "claude-code",
+    "opencode",
+    "cursor",
+    "codex"
+  ],
+  "author": "Top-Kit Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ducchinh135/top-kit.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
