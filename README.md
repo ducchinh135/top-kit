@@ -50,6 +50,7 @@ npx topkit install
 | OpenCode | ✅ | ✅ | ✅ Message transform hook |
 | Cursor | ✅ | ✅ | ✅ sessionStart hook |
 | Codex CLI | ✅ | ✅ | ❌ Skills load natively |
+| Antigravity IDE | ✅ | ✅ | ❌ Semantic skill discovery |
 
 ## How It Works
 
