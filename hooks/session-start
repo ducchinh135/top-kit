@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Top-Kit — Polyglot Session Start Hook
+# Detects platform and outputs appropriate bootstrap JSON.
+# Supported: Claude Code, Cursor, Copilot CLI
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+
+# Read the bootstrap skill
+BOOTSTRAP_FILE="$REPO_ROOT/skills/using-topkit/SKILL.md"
+
+if [ ! -f "$BOOTSTRAP_FILE" ]; then
+  echo '{"error": "Bootstrap file not found"}' >&2
+  exit 1
+fi
+
+# Read and escape for JSON embedding
+BOOTSTRAP_CONTENT=$(cat "$BOOTSTRAP_FILE")
+# Escape backslashes, double quotes, newlines, tabs
+ESCAPED_CONTENT=$(printf '%s' "$BOOTSTRAP_CONTENT" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' -e 's/\t/\\t/g')
+
+# Detect platform and output appropriate JSON
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then
+  # Cursor format: top-level additional_context
+  printf '{\n  "additional_context": "%s"\n}\n' "$ESCAPED_CONTENT"
+
+elif [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then
+  # Claude Code format: nested hookSpecificOutput
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$ESCAPED_CONTENT"
+
+else
+  # Copilot CLI format: top-level additionalContext
+  printf '{\n  "additionalContext": "%s"\n}\n' "$ESCAPED_CONTENT"
+
+fi
